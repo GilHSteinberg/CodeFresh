@@ -1,0 +1,14 @@
+{
+  "containers": [
+    {
+      "name": "fast",
+      "dockerId": "3b9811a47de2",
+      "dockerIp": "0.0.0.0",
+      "dockerPort": "7000",
+      "logger": "7000",
+      "lastLogTime": 0,
+      "subbed": true,
+      "id": "61592b52-b766-48e5-bd2d-f81409c9e966"
+    }
+  ]
+}

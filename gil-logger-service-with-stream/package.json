@@ -1,0 +1,29 @@
+{
+  "name": "gil-logger-service",
+  "version": "0.0.2",
+  "private": true,
+  "scripts": {
+    "start": "nodemon ./bin/www"
+  },
+  "dependencies": {
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.9",
+    "dockerode": "^3.2.1",
+    "express": "~4.16.0",
+    "http-errors": "~1.6.2",
+    "jade": "~1.11.0",
+    "lodash-id": "^0.14.0",
+    "lowdb": "^1.0.0",
+    "morgan": "~1.9.0",
+    "nodemon": "^2.0.4",
+    "qs": "^6.9.4"
+  },
+  "description": "Gil's container logging service (v. 1.0)",
+  "main": "www",
+  "directories": {
+    "test": "test"
+  },
+  "devDependencies": {},
+  "author": "Gil Steinberg",
+  "license": "ISC"
+}
