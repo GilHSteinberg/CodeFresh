@@ -1,0 +1,13 @@
+{
+  "containers": [
+    {
+      "name": "con2",
+      "dockerId": "64e56bc02c14",
+      "dockerIp": "0.0.0.0",
+      "dockerPort": "7000",
+      "logger": "Current time : 08:45:23\r\nhi3\r\nCurrent time : 08:45:28\r\nhi3\r\nCurrent time : 08:45:34\r\nhi3\r\nCurrent time : 08:45:39\r\nhi3\r\nCurrent time : 08:45:44\r\nhi3\r\nCurrent time : 08:45:49\r\nhi3\r\nCurrent time : 08:45:54\r\nhi3\r\nCurrent time : 08:45:59\r\nhi3\r\nCurrent time : 08:46:04\r\nhi3\r\nCurrent time : 08:46:09\r\nhi3\r\nCurrent time : 08:46:14\r\nhi3\r\nCurrent time : 08:46:19\r\nhi3\r\nCurrent time : 08:46:24\r\nhi3\r\nCurrent time : 08:46:29\r\nhi3\r\nCurrent time : 08:46:34\r\nhi3\r\nCurrent time : 08:46:39\r\nhi3\r\n",
+      "timeKey": 1606985177802,
+      "id": "1dccf96a-393f-4065-8994-1485a75f6783"
+    }
+  ]
+}
