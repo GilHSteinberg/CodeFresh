@@ -91,7 +91,7 @@ const SubToLogs = function SubToUnsubbed() {
           {
             data.on('data', (chunk) => {
               if(err){
-                console.log("an error occurred while accessing container (${current.dockerId}) - will inspect");
+                console.log("error occurred while accessing container (${current.dockerId}) - will inspect");
               }
               updateLog(current.dockerId, chunk);
             });
