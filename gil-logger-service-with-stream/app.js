@@ -46,7 +46,7 @@ app.use(function (err, req, res, next) {
   // render the error page
   res.status(err.status || 500).send();
 });
-const serverTimeKey = Math.floor(+new Date() / 1000);
+const serverTimeKey = Date.now();
 
 const SubToLogs = function SubToUnsubbed() {
   let dbContent = db.get('containers')
