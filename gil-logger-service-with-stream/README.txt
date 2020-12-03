@@ -55,5 +55,3 @@ Delete container:
 
 at the current configuration, log files are saved into a folder titled Logs with
 log_<dockerId>.txt as their name format.
-
-![Screenshot from 2020-12-03 10-58-39](https://user-images.githubusercontent.com/61935926/100999476-7f618a80-3565-11eb-9250-d9b7c0148442.png)
