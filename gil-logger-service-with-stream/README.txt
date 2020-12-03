@@ -56,7 +56,7 @@ Delete container:
 at the current configuration, log files are saved into a folder titled Logs with
 log_<dockerId>.txt as their name format.
 
-![Screenshot from 2020-12-03 10-58-39](Screenshot from 2020-12-03 10-58-39.jpg)
+![Screenshot from 2020-12-03 10-58-39](gil-logger-service-with-stream/Screenshot from 2020-12-03 10-58-39.jpg)
 ![Screenshot from 2020-12-03 10-58-52](https://user-images.githubusercontent.com/61935926/100988943-f6dced00-3558-11eb-9647-c94de7a02aee.jpg)
 ![Screenshot from 2020-12-03 10-59-39](https://user-images.githubusercontent.com/61935926/100988962-f9d7dd80-3558-11eb-86b3-2922cd282a6f.jpg)
 ![Screenshot from 2020-12-03 10-59-54](https://user-images.githubusercontent.com/61935926/100988974-fc3a3780-3558-11eb-8ca7-934e1ee48ac4.jpg)
