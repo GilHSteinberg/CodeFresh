@@ -30,6 +30,10 @@ Create a container:
 		2. use the front end interface by going to http://localhost:3000/create 
 		in your browser of choice and following the instructions there.
 
+![Screenshot from 2020-12-03 10-58-39](https://user-images.githubusercontent.com/61935926/100988933-f47a9300-3558-11eb-840d-ddeb7d991d5e.jpg)
+
+![Screenshot from 2020-12-03 10-58-52](https://user-images.githubusercontent.com/61935926/100988943-f6dced00-3558-11eb-9647-c94de7a02aee.jpg)
+
 Read container:
 	1. go to http://localhost:3000/read. there you will find an input field and 
 	a load button. Clicking on load when there is nothing in the field will pull
@@ -40,6 +44,10 @@ Read container:
 	2. make a GET request on postman specifying the dockerId of
 	any specific container to pull up its information. Make a request without
 	specifying anything to pull up records of all the containers in the system.
+
+![Screenshot from 2020-12-03 10-59-39](https://user-images.githubusercontent.com/61935926/100988962-f9d7dd80-3558-11eb-86b3-2922cd282a6f.jpg)
+
+![Screenshot from 2020-12-03 10-59-54](https://user-images.githubusercontent.com/61935926/100988974-fc3a3780-3558-11eb-8ca7-934e1ee48ac4.jpg)
 
 Update container:
 	1. go to http://localhost:3000/update and use the interface there to update
@@ -56,6 +64,7 @@ Delete container:
 at the current configuration, log files are saved into a folder titled Logs with
 log_<dockerId>.txt as their name format.
 
+![Screenshot from 2020-12-03 11-00-55](https://user-images.githubusercontent.com/61935926/100988985-fe9c9180-3558-11eb-864b-1cecbc8dee88.jpg)
 
 
 
