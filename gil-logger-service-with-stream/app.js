@@ -1,8 +1,8 @@
-var createError = require("http-errors");
-var express = require("express");
-var path = require("path");
-var cookieParser = require("cookie-parser");
-var logger = require("morgan");
+const createError = require("http-errors");
+const express = require("express");
+const path = require("path");
+const cookieParser = require("cookie-parser");
+const logger = require("morgan");
 const low = require("lowdb");
 const lodashId = require("lodash-id");
 const FileSync = require("lowdb/adapters/FileSync");
@@ -11,13 +11,13 @@ const db = low(adapter);
 
 db._.mixin(lodashId);
 db.defaults({ containers: [] });
-var UpdateRouter = express.Router();
-var apiRouter = require("./routes/api")(db);
-var clientRouter = require("./routes/client");
+const UpdateRouter = express.Router();
+const apiRouter = require("./routes/api")(db);
+const clientRouter = require("./routes/client");
 const fs = require("fs");
 const Docker = require("dockerode");
 
-var app = express();
+const app = express();
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
