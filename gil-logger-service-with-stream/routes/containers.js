@@ -6,21 +6,6 @@ const fs = require('fs');
 
 module.exports = function (db) {
     router.route("/containers/:dockerId")
-    .delete((req, res) => {
-        const fetchedItem = db.get("containers").find({dockerId: req.params.dockerId}).value();
-
-        if(fetchedItem){
-            db.get("containers").remove({dockerId: req.params.dockerId}).write();
-            res.status(204).send();
-        }
-        else{
-            res.status(404).send();
-        }
-    })
-    .patch((req, res) => {
-        res.send(
-            db.get("containers").find({dockerId: req.params.dockerId}).assign(req.body).write());
-    })
     .get((req, res) => {
         
         const fetchedItem = db.get("containers").find({dockerId: req.params.dockerId}).value();
@@ -36,6 +21,21 @@ module.exports = function (db) {
 
             res.status(404).send();
         }
+    })
+    .delete((req, res) => {
+        const fetchedItem = db.get("containers").find({dockerId: req.params.dockerId}).value();
+
+        if(fetchedItem){
+            db.get("containers").remove({dockerId: req.params.dockerId}).write();
+            res.status(204).send();
+        }
+        else{
+            res.status(404).send();
+        }
+    })
+    .patch((req, res) => {
+        res.send(
+            db.get("containers").find({dockerId: req.params.dockerId}).assign(req.body).write());
     });
 
     router.route("/containers")
