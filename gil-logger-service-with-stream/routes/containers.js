@@ -22,14 +22,18 @@ module.exports = function (db) {
             db.get("containers").find({dockerId: req.params.dockerId}).assign(req.body).write());
     })
     .get((req, res) => {
+        
         const fetchedItem = db.get("containers").find({dockerId: req.params.dockerId}).value();
-        const path = `./logs/log_${fetchedItem.dockerId}.txt`;
-        fetchedItem.logger = fs.readFileSync(path, 'utf8');
-
+        
         if(fetchedItem){
+            
+            const path = `./logs/log_${fetchedItem.dockerId}.txt`;
+            fetchedItem.logger = fs.readFileSync(path, 'utf8');
+
             res.send(fetchedItem);
         }
         else{
+
             res.status(404).send();
         }
     });
@@ -58,6 +62,7 @@ module.exports = function (db) {
             if (!newContainer.dockerId)
             {
                 error_occurred = true;
+                console.log("asfdasdsaasd");
                 errors.push({
                     field: "dockerId",
                     error: "required",

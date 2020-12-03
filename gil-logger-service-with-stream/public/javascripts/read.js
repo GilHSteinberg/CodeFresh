@@ -47,7 +47,6 @@ function addSingle({ data }) {
 
 function notFound() {
   resetContentArea();
-
   const h2 = document.querySelector("h2.hidden");
   h2.className = "";
 }
