@@ -46,17 +46,17 @@ app.use(function (err, req, res, next) {
   // render the error page
   res.status(err.status || 500).send();
 });
-
+const serverTimeKey = Math.floor(+new Date() / 1000);
 
 const SubToLogs = function SubToUnsubbed() {
-
   let dbContent = db.get('containers')
-      .filter({subbed: false})
       .sortBy('dockerIp')
-      .value()
+      .value();
 
   for (let i = 0; i < dbContent.length; ++i) {
-
+    if(dbContent[i].timeKey === serverTimeKey){
+      continue;
+    }
     let docker = new Docker(dbContent[i].dockerIp, dbContent[i].dockerPort);
 
     if (!docker) {
@@ -67,11 +67,12 @@ const SubToLogs = function SubToUnsubbed() {
          i < dbContent.length && dbContent[i].dockerIp === currentDockerIp; currentDockerIp = dbContent[i].dockerIp , ++i) {
       let current = dbContent[i];
       let container = null;
-
+      if(current.timeKey === serverTimeKey){
+        continue;
+      }        
       container = docker.getContainer(dbContent[i].dockerId);
-
       if (container) {
-        current.subbed = true;
+        current.timeKey = serverTimeKey;
         container.attach({stream: true, stdout: true, stderr: true, logs: true}, (err, data) => {
           if (err) {
             switch (err.statusCode) {

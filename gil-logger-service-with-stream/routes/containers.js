@@ -1,10 +1,39 @@
 var express = require("express");
 var router = express.Router();
-const qs = require('qs'); //qs.parse(),
+//const qs = require('qs'); //qs.parse(),
 const Docker = require('dockerode');
 const fs = require('fs');
 
 module.exports = function (db) {
+    router.route("/containers/:dockerId")
+    .delete((req, res) => {
+        const fetchedItem = db.get("containers").find({dockerId: req.params.dockerId}).value();
+
+        if(fetchedItem){
+            db.get("containers").remove({dockerId: req.params.dockerId}).write();
+            res.status(204).send();
+        }
+        else{
+            res.status(404).send();
+        }
+    })
+    .patch((req, res) => {
+        res.send(
+            db.get("containers").find({dockerId: req.params.dockerId}).assign(req.body).write());
+    })
+    .get((req, res) => {
+        const fetchedItem = db.get("containers").find({dockerId: req.params.dockerId}).value();
+        const path = `./logs/log_${fetchedItem.dockerId}.txt`;
+        fetchedItem.logger = fs.readFileSync(path, 'utf8');
+
+        if(fetchedItem){
+            res.send(fetchedItem);
+        }
+        else{
+            res.status(404).send();
+        }
+    });
+
     router.route("/containers")
         .get((req, res) => {
             res.send(db.get("containers").value());
@@ -78,40 +107,13 @@ module.exports = function (db) {
             }
 
             else{
-                newContainer.subbed = false;
+                newContainer.timeKey = 0;
                 newContainer.logger = "";
                 res.send(db.get("containers").insert(newContainer).write());
             }
         });
 
-    router.route("/containers/:dockerId")
-        .delete((req, res) => {
-            const fetchedItem = db.get("containers").find({dockerId: req.params.dockerId}).value();
-
-            if(fetchedItem){
-                db.get("containers").remove({dockerId: req.params.dockerId}).write();
-                res.status(204).send();
-            }
-            else{
-                res.status(404).send();
-            }
-        })
-        .patch((req, res) => {
-            res.send(
-                db.get("containers").find({dockerId: req.params.dockerId}).assign(req.body).write());
-        })
-        .get((req, res) => {
-            const fetchedItem = db.get("containers").find({dockerId: req.params.dockerId}).value();
-            const path = `./logs/log_${fetchedItem.dockerId}.txt`;
-            fetchedItem.logger = fs.readFileSync(path, 'utf8');
-
-            if(fetchedItem){
-                res.send(fetchedItem);
-            }
-            else{
-                res.status(404).send();
-            }
-        });
+ 
     return router;
 
 };

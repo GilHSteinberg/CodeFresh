@@ -6,5 +6,5 @@ do
 	echo "Current time : $now"
 	echo 'hi'
 	echo '\n'
-	sleep 30
+	sleep 10
 done
