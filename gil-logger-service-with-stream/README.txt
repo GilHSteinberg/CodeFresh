@@ -56,11 +56,14 @@ Delete container:
 at the current configuration, log files are saved into a folder titled Logs with
 log_<dockerId>.txt as their name format.
 
-![Alt text](https://user-images.githubusercontent.com/61935926/100987629-6c47be00-3557-11eb-91f5-0074e525de31.png "ss1")
-![Alt text](https://user-images.githubusercontent.com/61935926/100987625-6baf2780-3557-11eb-89bc-93b0f7da5373.png "ss2")
-![Alt text](https://user-images.githubusercontent.com/61935926/100987623-6b169100-3557-11eb-8619-c868c439636e.png "ss3")
-![Alt text](https://user-images.githubusercontent.com/61935926/100987604-681ba080-3557-11eb-8ea4-7510ea0318cb.png "ss4")
-![Alt text](https://user-images.githubusercontent.com/61935926/100987601-67830a00-3557-11eb-8d12-32f5be79d332.png "ss5")
+![Screenshot from 2020-12-03 10-58-39](https://user-images.githubusercontent.com/61935926/100988933-f47a9300-3558-11eb-840d-ddeb7d991d5e.jpg)
+![Screenshot from 2020-12-03 10-58-52](https://user-images.githubusercontent.com/61935926/100988943-f6dced00-3558-11eb-9647-c94de7a02aee.jpg)
+![Screenshot from 2020-12-03 10-59-39](https://user-images.githubusercontent.com/61935926/100988962-f9d7dd80-3558-11eb-86b3-2922cd282a6f.jpg)
+![Screenshot from 2020-12-03 10-59-54](https://user-images.githubusercontent.com/61935926/100988974-fc3a3780-3558-11eb-8ca7-934e1ee48ac4.jpg)
+![Screenshot from 2020-12-03 11-00-55](https://user-images.githubusercontent.com/61935926/100988985-fe9c9180-3558-11eb-864b-1cecbc8dee88.jpg)
+
+
+
 
 
 
