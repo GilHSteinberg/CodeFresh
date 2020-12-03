@@ -1,6 +1,6 @@
 var express = require("express");
 var router = express.Router();
-//const qs = require('qs'); //qs.parse(),
+const qs = require('qs'); //qs.parse(),
 const Docker = require('dockerode');
 const fs = require('fs');
 
@@ -18,7 +18,6 @@ module.exports = function (db) {
             res.send(fetchedItem);
         }
         else{
-
             res.status(404).send();
         }
     })
@@ -37,7 +36,7 @@ module.exports = function (db) {
         res.send(
             db.get("containers").find({dockerId: req.params.dockerId}).assign(req.body).write());
     });
-
+  
     router.route("/containers")
         .get((req, res) => {
             res.send(db.get("containers").value());
