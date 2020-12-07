@@ -90,6 +90,7 @@ const SubToLogs = function SubToUnsubbed() {
   {
     let dbContent = db
         .get('containers')
+        .filter(currentConfig.label)
         .sortBy('dockerIp')
         .value();
 
@@ -112,43 +113,41 @@ const SubToLogs = function SubToUnsubbed() {
         container = serverDocker.getContainer(dbContent[i].dockerId);
         if (container) {
           current.timeKey = serverTimeKey;//consider async.series
-          if(current.label === currentConfig.label)
-          {
-            container.attach({stream: true, stdout: true, stderr: true, logs: true}, (err, data) => {
-              if (err) {
-                switch (err.statusCode) {
-                  case 404:
+
+          container.attach({stream: true, stdout: true, stderr: true, logs: true}, (err, data) => {
+            if (err) {
+              switch (err.statusCode) {
+                case 404:
+                  db.get('containers')
+                      .remove({id: current.id})
+                      .write();
+                  console.log(`bad container id detected (${current.dockerId}). will remove`);
+                  break;
+                default:
+                  console.log(err);
+                  break;
+              }
+            }
+            if(data){
+              data.on('data', (chunk) => {
+                if(err){
+                  console.log("error occurred while accessing container (${current.dockerId}) - will inspect");
+                }//considerPipe
+                updateLog(current.dockerId, chunk);
+              });//data.on
+
+              data.on('stop', () => {
+                container.inspect(current, (data) => {
+                  if (data.State.Running !== true) {
                     db.get('containers')
                         .remove({id: current.id})
                         .write();
-                    console.log(`bad container id detected (${current.dockerId}). will remove`);
-                    break;
-                  default:
-                    console.log(err);
-                    break;
-                }
-              }
-              if(data){
-                data.on('data', (chunk) => {
-                  if(err){
-                    console.log("error occurred while accessing container (${current.dockerId}) - will inspect");
-                  }//considerPipe
-                  updateLog(current.dockerId, chunk);
-                });//data.on
-
-                data.on('stop', () => {
-                  container.inspect(current, (data) => {
-                    if (data.State.Running !== true) {
-                      db.get('containers')
-                          .remove({id: current.id})
-                          .write();
-                      console.log(`stopped container detected (${current.dockerId}). Removing from db`);
-                    }//if container isn't running
-                  });//container.inspect
-                });//callback for data.on
-              }//callback for attach()
-            });
-          }
+                    console.log(`stopped container detected (${current.dockerId}). Removing from db`);
+                  }//if container isn't running
+                });//container.inspect
+              });//callback for data.on
+            }//callback for attach()
+          });
         }
       }
     }
