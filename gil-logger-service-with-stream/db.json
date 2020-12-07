@@ -1,13 +1,7 @@
 {
-  "containers": [
-    {
-      "name": "do",
-      "dockerId": "ecd5c2a87bf1",
-      "dockerIp": "0.0.0.0",
-      "dockerPort": "7000",
-      "logger": "",
-      "timeKey": 0,
-      "id": "92aeeacb-8f8d-4be1-97c5-f98022ae7ab0"
-    }
-  ]
+  "containers": [],
+  "config": {
+    "label": "con1",
+    "LastUpdate": 1607342559581
+  }
 }

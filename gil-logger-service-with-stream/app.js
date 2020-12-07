@@ -10,7 +10,7 @@ const adapter = new FileSync("db.json");
 const db = low(adapter);
 
 db._.mixin(lodashId);
-db.defaults({ containers: [] });
+db.defaults({ containers: [], config: {}});
 const UpdateRouter = express.Router();
 const apiRouter = require("./routes/api")(db);
 const clientRouter = require("./routes/client");
@@ -46,71 +46,121 @@ app.use(function (err, req, res, next) {
   // render the error page
   res.status(err.status || 500).send();
 });
-const serverTimeKey = Date.now();
+
+let serverTimeKey = Date.now();
+
+const serverDocker = new Docker("0.0.0.0", 9000);
 
 const SubToLogs = function SubToUnsubbed() {
-  let dbContent = db.get('containers')
-      .sortBy('dockerIp')
-      .value();
+  const currentConfig = db.get('config').value();
+  if(serverTimeKey < currentConfig.LastUpdate)
+  {
+    serverTimeKey = currentConfig.LastUpdate;
 
-  for (let i = 0; i < dbContent.length; ++i) {
-    if(dbContent[i].timeKey === serverTimeKey){
-      continue;
-    }
-    let docker = new Docker(dbContent[i].dockerIp, dbContent[i].dockerPort);
+    let listOpts = {
+      "limits": 12,
+      "filters": `{\"label\": [\"mylabel=${currentConfig.label}\"]}`
+    };
 
-    if (!docker) {
-      continue;
-    }
+    serverDocker.listContainers(listOpts,(err, containers) => {
+      if(err){
+        console.log(containers);
+        console.log(err);
+      }
+      else{
+        containers.forEach((containerInfo) => {
+          console.log(containerInfo);
+          let newContainer = {name: containerInfo.name,
+            dockerId: containerInfo.id,
+            dockerIp: "0.0.0.0",
+            dockerPort: 8888,
+            logger: "",
+            label: containerInfo.label};
+          db
+              .get("containers")
+              .insert(newContainer)
+              .write()
+        })
+      }
+    });
+  }
+  //update last update time config
+  else
+  {
+    let dbContent = db
+        .get('containers')
+        .sortBy('dockerIp')
+        .value();
 
-    for (let currentDockerIp = dbContent[i].dockerIp;
-         i < dbContent.length && dbContent[i].dockerIp === currentDockerIp; currentDockerIp = dbContent[i].dockerIp , ++i) {
-      let current = dbContent[i];
-      let container = null;
-      if(current.timeKey === serverTimeKey){
+    for (let i = 0; i < dbContent.length; ++i) {
+
+      if(dbContent[i].timeKey === serverTimeKey){
         continue;
-      }        
-      container = docker.getContainer(dbContent[i].dockerId);
-      if (container) {
-        current.timeKey = serverTimeKey;
-        container.attach({stream: true, stdout: true, stderr: true, logs: true}, (err, data) => {
-          if (err) {
-            switch (err.statusCode) {
-              case 404:
-                db.get('containers')
-                    .remove({id: current.id})
-                    .write();
-                console.log(`bad container id detected (${current.dockerId}). will remove`);
-                break;
-              default:
-                console.log(err);
-                break;
-            }
-          }
-          if(data)
-          {
-            data.on('data', (chunk) => {
-              if(err){
-                console.log("error occurred while accessing container (${current.dockerId}) - will inspect");
-              }
-              updateLog(current.dockerId, chunk);
-            });
+      }
 
-            data.on('stop', () => {
-              container.inspect(current, (data) => {
-                if (data.State.Running !== true) {
-                  db.get('containers')
-                      .remove({id: current.id})
-                      .write();
-                  console.log(`stopped container detected (${current.dockerId}). Removing from db`);
+      //let docker = new Docker(dbContent[i].dockerIp, dbContent[i].dockerPort);
+      /*
+          if (!docker) {
+            continue;
+          }
+      */
+      for (let currentDockerIp = dbContent[i].dockerIp;
+           i < dbContent.length && dbContent[i].dockerIp === currentDockerIp;
+           currentDockerIp = dbContent[i].dockerIp , ++i) {
+        let current = dbContent[i];
+        let container = null;
+
+        if(current.timeKey === serverTimeKey){
+          continue;
+        }
+
+        container = serverDocker.getContainer(dbContent[i].dockerId);
+        if (container) {
+          current.timeKey = serverTimeKey;
+          if(current.label === currentConfig.label)
+          {
+            container.attach({stream: true, stdout: true, stderr: true, logs: true}, (err, data) => {
+              if (err) {
+                switch (err.statusCode) {
+                  case 404:
+                    db.get('containers')
+                        .remove({id: current.id})
+                        .write();
+                    console.log(`bad container id detected (${current.dockerId}). will remove`);
+                    break;
+                  default:
+                    console.log(err);
+                    break;
                 }
-              });
+              }
+              if(data)
+              {
+                data.on('data', (chunk) => {
+                  if(err){
+                    console.log("error occurred while accessing container (${current.dockerId}) - will inspect");
+                  }
+                  updateLog(current.dockerId, chunk);
+                });
+
+                data.on('stop', () => {
+                  container.inspect(current, (data) => {
+                    if (data.State.Running !== true) {
+                      db.get('containers')
+                          .remove({id: current.id})
+                          .write();
+                      console.log(`stopped container detected (${current.dockerId}). Removing from db`);
+                    }
+                  });
+                });
+              }
             });
           }
-        });
+        }
       }
     }
+
   }
+
 }
 
 const InspectContainers = function() {

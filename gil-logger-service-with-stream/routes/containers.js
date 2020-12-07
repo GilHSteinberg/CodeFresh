@@ -6,37 +6,33 @@ const fs = require('fs');
 
 module.exports = function (db) {
     router.route("/containers/:dockerId")
-    .get((req, res) => {
-        
-        const fetchedItem = db.get("containers").find({dockerId: req.params.dockerId}).value();
-        
-        if(fetchedItem){
-            
-            const path = `./logs/log_${fetchedItem.dockerId}.txt`;
-            fetchedItem.logger = fs.readFileSync(path, 'utf8');
+        .get((req, res) => {
 
-            res.send(fetchedItem);
-        }
-        else{
-            res.status(404).send();
-        }
-    })
-    .delete((req, res) => {
-        const fetchedItem = db.get("containers").find({dockerId: req.params.dockerId}).value();
+            const fetchedItem = db.get("containers").find({dockerId: req.params.dockerId}).value();
 
-        if(fetchedItem){
-            db.get("containers").remove({dockerId: req.params.dockerId}).write();
-            res.status(204).send();
-        }
-        else{
-            res.status(404).send();
-        }
-    })
-    .patch((req, res) => {
-        res.send(
-            db.get("containers").find({dockerId: req.params.dockerId}).assign(req.body).write());
-    });
-  
+            if(fetchedItem){
+
+                const path = `./logs/log_${fetchedItem.dockerId}.txt`;
+                fetchedItem.logger = fs.readFileSync(path, 'utf8');
+
+                res.send(fetchedItem);
+            }
+            else{
+                res.status(404).send();
+            }
+        })
+        .delete((req, res) => {
+            const fetchedItem = db.get("containers").find({dockerId: req.params.dockerId}).value();
+
+            if(fetchedItem){
+                db.get("containers").remove({dockerId: req.params.dockerId}).write();
+                res.status(204).send();
+            }
+            else{
+                res.status(404).send();
+            }
+        });
+
     router.route("/containers")
         .get((req, res) => {
             res.send(db.get("containers").value());
@@ -113,11 +109,17 @@ module.exports = function (db) {
             else{
                 newContainer.timeKey = 0;
                 newContainer.logger = "";
+
                 res.send(db.get("containers").insert(newContainer).write());
             }
+        })
+        .patch((req, res) => {
+            let newData = req.body;
+            newData.LastUpdate = Date.now();
+            res.send(db.get("config").assign(newData).write());
         });
 
- 
+
     return router;
 
 };
