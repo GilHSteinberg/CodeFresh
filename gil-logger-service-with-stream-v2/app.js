@@ -1,18 +1,17 @@
 const createError = require("http-errors");
 const express = require("express");
 const path = require("path");
-const cookieParser = require("cookie-parser");
-const logger = require("morgan");
-const low = require("lowdb");
-const lodashId = require("lodash-id");
+//const cookieParser = require("cookie-parser");
+const low = require("lowdb");//the db I'll be using
+const lodashId = require("lodash-id"); //adds useful funcs to lowdb
 const FileSync = require("lowdb/adapters/FileSync");
-const adapter = new FileSync("db.json");
+const adapter = new FileSync("db.json");//this is how we'll be writing to our db
 const db = low(adapter);
 
-db._.mixin(lodashId);
-db.defaults({ containers: [], config: {}});
-const UpdateRouter = express.Router();
-const apiRouter = require("./routes/api")(db);
+db._.mixin(lodashId); // connects lowdb with loadashes functions
+db.defaults({ containers: [] }); //defines the default content of our db
+//const UpdateRouter = express.Router();
+const apiRouter = require("./routes/api")(db);//to route incoming requests from api with d.
 const clientRouter = require("./routes/client");
 const fs = require("fs");
 const Docker = require("dockerode");
@@ -23,14 +22,16 @@ const app = express();
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "jade");
 
-app.use(logger("dev"));
-app.use(express.json());
+app.use(express.json());//converts oncoming data to json
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
+//app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use(clientRouter);
 app.use("/api", apiRouter);
+//any request to a URL starting with /api should go to the ApiRouter router object
+//which means it'll be sent to the function in api with db, which is the object
+//which will refer to our db, from which it'll be routed to ./containers
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -46,7 +47,6 @@ app.use(function (err, req, res, next) {
   // render the error page
   res.status(err.status || 500).send();
 });
-
 let serverTimeKey = Date.now();
 
 const serverDocker = new Docker("0.0.0.0", 9000);
