@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+        <title>Gils Logger Service - Update</title>
+        <meta name="author" content="Gil Steinberg">
+        </meta>
+        <link rel="stylesheet" href="/stylesheets/tachyons.min.css" />
+        </link>
+        <link rel="stylesheet" href="/stylesheets/style.css">
+        </link>
+        <script src="/javascripts/axios.min.js"></script>
+        <script src="/javascripts/lodash.min.js"></script>
+    </head>
+
+    <body>
+        <nav class=" mb2">
+            <ul>
+                <li><a href=" /create">Add Containers</a></li>
+                <li><a href=" /read">Show Containers</a></li>
+                <li class=" active"><a href="/update">Update Containers</a></li>
+                <li><a href=" /delete">Delete Containers</a></li>
+            </ul>
+            <img class="fr logo" src="/images/gil-logo.png">
+        </nav>
+        <div class="pl4">
+            <h2>Container</h2>
+            <form class="w-25" autocomplete="off">
+                <div class="flex flex-column pt2">
+                    <label>Name</label>
+                    <input name="name" type="text" />
+                </div>
+                <button id="submit" class="fr mt2">Update Label</button>
+            </form>
+        </div>
+    </body>
+    <footer>
+        <script src="/javascripts/update.js"></script>
+    </footer>
+
+</html>

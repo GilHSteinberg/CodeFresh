@@ -1,0 +1,56 @@
+{
+  "containers": [
+    {
+      "name": "flip",
+      "dockerId": "78417339c3d3",
+      "dockerIp": "0.0.0.0",
+      "dockerPort": "7000",
+      "logger": "",
+      "dockerLabel": "con3",
+      "timeKey": 1607348892478,
+      "id": "bb05b942-5bc9-40ad-9d7e-c4736db25e69"
+    },
+    {
+      "name": "new",
+      "dockerId": "78417339c3d3",
+      "dockerIp": "0.0.0.0",
+      "dockerPort": "9999",
+      "logger": "",
+      "dockerLabel": "mylabel con3",
+      "timeKey": 1607348892478,
+      "id": "94d9f6dd-33ce-442b-b57d-f69b427bce65"
+    },
+    {
+      "name": "new",
+      "dockerId": "78417339c3d3",
+      "dockerIp": "0.0.0.0",
+      "dockerPort": "8888",
+      "logger": "",
+      "dockerLabel": "mylabel com",
+      "timeKey": 1607348892478,
+      "label": [
+        "mylabel",
+        "com"
+      ],
+      "id": "5c4d1317-c0af-49f0-9a03-c243e39a5cd2"
+    },
+    {
+      "name": "gil",
+      "dockerId": "78417339c3d3",
+      "dockerIp": "0.0.0.0",
+      "dockerPort": "8888",
+      "logger": "",
+      "dockerLabel": "mylabel:con3",
+      "timeKey": 0,
+      "label": [
+        "mylabel",
+        "con3"
+      ],
+      "id": "79b31b04-1788-45e5-8393-8e0812e8afab"
+    }
+  ],
+  "config": {
+    "label": "con1",
+    "LastUpdate": 1607342559581
+  }
+}
