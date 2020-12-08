@@ -1,4 +1,4 @@
-Gil's container logging service (v. 1.0)
+Gil's container logging service (v. 2.00)
 
 Used port = 3000
 
