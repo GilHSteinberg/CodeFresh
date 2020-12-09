@@ -3,7 +3,7 @@ const router = express.Router();
 const containersRouter = require("./containers");
 
 module.exports = function (db) {
-  router.use(containersRouter(db));
+  router.use(containersRouter.Main(db));
 
   return router;
 };

@@ -1,3 +1,4 @@
+//@ts-check 
 const createError = require("http-errors");
 const express = require("express");
 const path = require("path");
@@ -47,9 +48,20 @@ app.use(function (err, req, res, next) {
   // render the error page
   res.status(err.status || 500).send();
 });
+const newContainerProcesser = require("./dbManager");
+const newUpdaterNotifier = require("./routes/containers").newContainerNotifier;
+newUpdaterNotifier.on('new', () => newContainerProcesser(db));
+
+const serverDocker = new Docker();
+
+const LabelSubscriber = require("./Subscribe");
+newUpdaterNotifier.on('newLabel', (label) => LabelSubscriber(serverDocker, label));
+
+module.exports = app;
+/*
 let serverTimeKey = Date.now();
 
-const serverDocker = new Docker("0.0.0.0", 9000);
+
 
 const SubToLogs = function SubToUnsubbed() {
   const currentConfig = db.get('config').value();
@@ -90,25 +102,15 @@ const SubToLogs = function SubToUnsubbed() {
   {
     let dbContent = db
         .get('containers')
-        .filter(currentConfig.label)
+        .filter({dockerLabel: currentConfig.label})
+        .filter((item) => item.timeKey !== serverTimeKey)
         .sortBy('dockerIp')
         .value();
 
     for (let i = 0; i < dbContent.length; ++i) {
 
-      if(dbContent[i].timeKey === serverTimeKey){
-        continue;
-      }
-
-      for (let currentDockerIp = dbContent[i].dockerIp;
-           i < dbContent.length && dbContent[i].dockerIp === currentDockerIp;
-           currentDockerIp = dbContent[i].dockerIp , ++i) {
         let current = dbContent[i];
         let container = null;
-
-        if(current.timeKey === serverTimeKey){
-          continue;
-        }
 
         container = serverDocker.getContainer(dbContent[i].dockerId);
         if (container) {
@@ -149,7 +151,6 @@ const SubToLogs = function SubToUnsubbed() {
             }//callback for attach()
           });
         }
-      }
     }
   }
 }//SubToLogs
@@ -211,7 +212,7 @@ function updateLog(id, data) {
 const timerforLogs = setInterval(SubToLogs, 10 * 1000);
 const timerforInspect = setInterval(InspectContainers, 50 * 1000);
 
-module.exports = app;
+*/
 
 
 

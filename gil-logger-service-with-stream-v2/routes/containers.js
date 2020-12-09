@@ -1,10 +1,16 @@
+
+const EventEmitter = require('events').EventEmitter;
 var express = require("express");
 var router = express.Router();
 const qs = require('qs'); //qs.parse(),
 const Docker = require('dockerode');
 const fs = require('fs');
+const ContainerManager = require('../dbManager.js');
 
-module.exports = function (db) {
+const newContainerNotifier = new EventEmitter();
+exports.newContainerNotifier = newContainerNotifier;
+
+exports.Main = function (db) {
     router.route("/containers/:dockerId")
         .get((req, res) => {
 
@@ -109,13 +115,15 @@ module.exports = function (db) {
             else{
                 newContainer.timeKey = 0;
                 newContainer.logger = "";
-                newContainer.label = newContainer.dockerLabel.toString().split(':');
+                newContainerNotifier.emit('new');
                 res.send(db.get("containers").insert(newContainer).write());
             }
         })
         .patch((req, res) => {
             let newData = req.body;
             newData.LastUpdate = Date.now();
+            newData.label = newData.label.toString().split(":");
+            newContainerNotifier.emit('newLabel', newData.label[1]);
             res.send(db.get("config").assign(newData).write());
         });
 

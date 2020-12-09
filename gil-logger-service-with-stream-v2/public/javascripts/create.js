@@ -51,3 +51,14 @@ function handleErrors({response}){
   }
   window.alert("an error occured");
 }
+
+document.getElementById("loadEx").onclick = function (event){
+  event.preventDefault();
+
+    document.getElementsByName("name")[0].value = "con1";
+    document.getElementsByName("dockerId")[0].value = "1ba77da95f59";
+    document.getElementsByName("dockerIp")[0].value = "0.0.0.0";
+    document.getElementsByName("dockerPort")[0].value = 8888;
+    document.getElementsByName("dockerLabel")[0].value = "mylabel:con3";
+  
+}
